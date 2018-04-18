@@ -7,8 +7,8 @@ async function runTests(server) {
   await test('The map is loaded', async (t) => {
     const browser = await puppeteer.launch({
       //uncomment to launch graphical browser
-      headless: false,
-      slowMo: 500,
+      //headless: false,
+      //slowMo: 500,
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const page = await browser.newPage();
