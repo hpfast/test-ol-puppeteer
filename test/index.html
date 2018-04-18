@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Testing amaps</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.css" />
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/webmapper/nlmaps/temp-publish-dist/dist/assets/css/nlmaps.css"/>
+    <style> #mapdiv{height:300px}</style>
+  </head>
+  <body>
+    <div id="mapdiv"></div> <!--for testing nlmaps and click event-->
+    <p id="clickresults"></p>
+    <div id="mapdiv2"></div> <!--for testing feature creation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.js"></script>
+    <script src="nlmaps/dist/nlmaps.iife.js"></script>
+    <script>
+
+      //map1: nlmaps and click event
+      let map = nlmaps.createMap({target: 'mapdiv',
+        layer: 'pastel',
+        marker: false,
+        center: {
+          longitude: 5.969900,
+          latitude: 52.211200
+        }
+      });
+
+      function onClick(evt) {
+        var map = evt.map;
+        let res = document.getElementById('clickresults');
+        res.innerText = evt.originalEvent.clientX + ',' + evt.originalEvent.clientY;
+      };
+
+      map.on('click', onClick)
+      
+      //map2: feature creation
+
+      var raster = new ol.layer.Tile({
+        source: new ol.source.OSM()
+      });
+
+      let source = new ol.source.Vector({wrapX: false});
+
+      var vector = new ol.layer.Vector({
+        source: source
+      });
+
+      let map2 = new ol.Map({
+        layers: [raster, vector],
+        target: 'mapdiv2',
+        view: new ol.View({
+          center: [-11000000, 4600000],
+          zoom: 4
+        })
+      });
+
+      let draw = new ol.interaction.Draw({
+        source: source,
+        type: 'Point'
+      });
+
+      map2.addInteraction(draw);
+
+    </script>
+  </body>
+</html>
+
+
+
